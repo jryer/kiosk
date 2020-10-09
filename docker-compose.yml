@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+  server:
+    build: ./server
+    volumes:
+      - ./server:/app/server
+    ports:
+      - 3000:3000
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    depends_on:
+      - db
+  client:
+    build: ./client
+    volumes:
+      - ./client/src:/app/client/src
+      - ./client/public:/app/client/public
+    depends_on:
+      - server
+    ports:
+      - 4000:4000
+    tty: true
