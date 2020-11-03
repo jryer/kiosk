@@ -8,5 +8,5 @@ RUN yarn install
 
 COPY . /app/client
 
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "start", "--host", "0.0.0.0" ]
 EXPOSE 4000
